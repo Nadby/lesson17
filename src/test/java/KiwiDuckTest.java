@@ -86,11 +86,16 @@ public class KiwiDuckTest extends BaseTest {
         driver.findElement(By.linkText("Selenium practice (elements)")).click();
         driver.findElement(By.xpath("//a[@href='iframe']")).click();
 
-        //далее текст задания не соответствует реальной странице https://kiwiduck.github.io/iframe:
-        //нет описанных полей и кнопки VERIFY
-
         //На странице “IFrame” ввести код, выведенный на этой странице, в поле ввода
+        driver.switchTo().frame("code-frame");
+        String code = driver.findElement(By.xpath("//label[@id='code']")).getText().substring("Your code is: ".length());
+        driver.switchTo().defaultContent();
+        driver.findElement(By.xpath("//input[@name='code']")).sendKeys(code);
         //и нажать на кнопку «VERIFY»
+        driver.findElement(By.xpath("//input[@value='Verify']")).click();
         //Проверить, что появилась ссылка с текстом “Great! Return to menu”и нажать на неё
+        Assert.assertTrue(driver.findElements(By.xpath("//a[@href and text()='Great! Return to menu']")).size() > 0,
+                "ссылка с текстом 'Great! Return to menu' не отображается");
+        driver.findElement(By.xpath("//a[@href and text()='Great! Return to menu']")).click();
     }
 }
